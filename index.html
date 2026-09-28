@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ขอบคุณที่เข้ามาในชีวิตนะ 💖</title>
+    <meta name="description" content="พื้นที่เล็กๆ แสนอบอุ่น เพื่อบอกขอบคุณที่เข้ามาในชีวิต">
+
+    <!-- Google Fonts: Mali (Cute Thai handwriting) & Prompt (Clean Thai modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon (Cute heart data URI) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+</head>
+<body>
+
+    <!-- Particle Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Hidden YouTube Player Container -->
+    <div id="youtube-player" class="sr-only"></div>
+
+    <!-- 💌 INTRO ENVELOPE OVERLAY (Click to open letter & start gentle music) -->
+    <div id="intro-overlay" class="intro-overlay">
+        <div class="intro-content">
+            <div class="envelope-wrapper" id="envelope-btn" role="button" tabindex="0" aria-label="คลิกเพื่อเปิดจดหมาย">
+                <div class="envelope">
+                    <div class="envelope-back"></div>
+                    <div class="envelope-letter">
+                        <div class="letter-preview">
+                            <span class="heart-stamp">💌</span>
+                            <p class="letter-hint">มีข้อความพิเศษถึงเธอ...</p>
+                        </div>
+                    </div>
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-front"></div>
+                    <div class="envelope-seal">
+                        <span>💖</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="intro-text">
+                <h2>มีจดหมายฉบับหนึ่งส่งถึงเธอ</h2>
+                <p>แตะที่ซองจดหมายเพื่อเปิดอ่านพร้อมเปิดเพลงเบาๆ นะ 🎵</p>
+                <button id="open-btn" class="cute-btn primary pulse">
+                    <span>เปิดอ่านข้อความ 💌</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎵 FLOATING MUSIC PLAYER (Sticky) -->
+    <aside class="floating-player" id="floating-player" aria-label="เครื่องเล่นเพลง">
+        <div class="player-vinyl" id="player-vinyl">
+            <div class="vinyl-disc">
+                <span class="vinyl-center">🎵</span>
+            </div>
+        </div>
+        <div class="player-info">
+            <span class="song-title">Dept - 17 (Lucky)</span>
+            <div class="equalizer" id="equalizer">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button id="play-pause-btn" class="icon-btn" title="เล่น / หยุดเพลง" aria-label="เล่นหรือหยุดเพลง">
+                <span id="play-icon">⏸️</span>
+            </button>
+            <div class="volume-container">
+                <span class="vol-icon" id="vol-toggle">🔉</span>
+                <input type="range" id="volume-slider" min="0" max="100" value="25" title="ปรับระดับเสียง">
+            </div>
+        </div>
+    </aside>
+
+    <!-- 🌟 MAIN CONTENT CONTAINER -->
+    <main class="main-wrapper" id="main-content">
+        
+        <!-- Header Hero Section -->
+        <header class="hero-section">
+            <div class="special-badge">
+                <span>✨</span> <span id="recipient-badge">ถึงเธอคนพิเศษ</span> <span>✨</span>
+            </div>
+            <h1 class="main-title" id="header-title">ขอบคุณที่เข้ามาในชีวิตนะ 💖</h1>
+            <p class="main-subtitle" id="header-subtitle">ผู้คนมีมากมายเป็นล้าน... แต่ฉันโชคดีเหลือเกินที่ได้พบกับเธอ</p>
+        </header>
+
+        <!-- 🎶 Highlight Lyrics Spotlight -->
+        <section class="lyrics-card" aria-label="ท่อนเพลงพิเศษ">
+            <div class="quote-mark left">“</div>
+            <p class="lyrics-text" id="lyrics-text">
+                ดีจังเลย โชคดีที่เราได้พบกัน<br>
+                ผู้คนมีมากมายเป็นล้าน<br>
+                แต่ฉันโชคดีเหลือเกินที่ได้พบกับเธอ
+            </p>
+            <div class="quote-mark right">”</div>
+            <div class="lyrics-author" id="lyrics-author">— Dept (17)</div>
+        </section>
+
+        <!-- ⏳ Days of Warmth Counter -->
+        <section class="counter-section">
+            <div class="section-title-wrap">
+                <span class="icon">⏳</span>
+                <h2>ช่วงเวลาดีๆ ที่มีเธอเข้ามาในชีวิต</h2>
+            </div>
+            <p class="counter-desc">ทุกวันที่มีเธอ คือวันที่โชคดีเสมอมา</p>
+            
+            <div class="timer-grid" id="timer-grid">
+                <div class="timer-box">
+                    <span class="timer-num" id="days">0</span>
+                    <span class="timer-label">วัน</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-num" id="hours">0</span>
+                    <span class="timer-label">ชั่วโมง</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-num" id="minutes">0</span>
+                    <span class="timer-label">นาที</span>
+                </div>
+                <div class="timer-box">
+                    <span class="timer-num" id="seconds">0</span>
+                    <span class="timer-label">วินาที</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 📜 Heartfelt Letter Section -->
+        <section class="letter-section">
+            <div class="parchment-card">
+                <div class="tape-decoration top-left"></div>
+                <div class="tape-decoration top-right"></div>
+                <div class="card-inner">
+                    <div class="letter-header">
+                        <span class="letter-to" id="letter-recipient">ถึง: เธอคนพิเศษ 🧸</span>
+                    </div>
+                    <div class="letter-body" id="letter-body">
+                        <!-- Filled dynamically from config.js -->
+                    </div>
+                    <div class="letter-footer">
+                        <span class="letter-sign" id="letter-sender">จาก: เราเอง 🤍</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🌸 Reasons Why I'm Grateful (Interactive Cards - No Photos) -->
+        <section class="reasons-section">
+            <div class="section-title-wrap">
+                <span class="icon">✨</span>
+                <h2>เหตุผลเล็กๆ ที่อยากขอบคุณเธอ</h2>
+            </div>
+            <p class="reasons-hint">(แตะที่การ์ดเพื่ออ่านข้อความนะ)</p>
+
+            <div class="reasons-grid" id="reasons-grid">
+                <!-- Dynamically generated from CONFIG.reasons -->
+            </div>
+        </section>
+
+        <!-- 🔮 Daily Message Capsule (Random Sweet Note) -->
+        <section class="capsule-section">
+            <div class="capsule-card">
+                <div class="capsule-badge">🎁 แคปซูลความรู้สึก</div>
+                <h3>ต้องการกำลังใจ หรือรอยยิ้มไหม?</h3>
+                <p>ถ้าวันนี้เหนื่อยหรือคิดถึงกัน ลองกดเปิดแคปซูลดูนะ</p>
+                <div class="capsule-quote-box" id="capsule-quote-box">
+                    <span class="capsule-placeholder">กดปุ่มด้านล่างเพื่อรับข้อความพิเศษ... 💌</span>
+                </div>
+                <button id="capsule-btn" class="cute-btn secondary">
+                    <span>เปิดแคปซูลความสุข 🧋✨</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 💖 Interactive Love Burst Button -->
+        <section class="heart-burst-section">
+            <div class="burst-wrapper">
+                <p class="burst-text">ส่งความรู้สึกดีๆ และความรักให้เธอ</p>
+                <button id="send-heart-btn" class="heart-bubble-btn" aria-label="กดส่งหัวใจ">
+                    <span class="heart-icon">💖</span>
+                    <span class="heart-btn-label">กดส่งหัวใจ</span>
+                </button>
+                <div class="burst-count-badge">
+                    ส่งหัวใจไปแล้ว <span id="heart-counter">0</span> ดวง ✨
+                </div>
+            </div>
+        </section>
+
+        <!-- 🌸 Sweet Footer -->
+        <footer class="cute-footer">
+            <div class="footer-divider">🌸 🌸 🌸</div>
+            <p class="footer-text" id="footer-text">สร้างขึ้นด้วยความรู้สึกดีๆ ทั้งหมดที่มีให้เธอ 💖</p>
+            <div class="footer-actions">
+                <button id="copy-link-btn" class="pill-btn">
+                    <span>คัดลอกลิงก์หน้านี้ 🔗</span>
+                </button>
+                <button id="toggle-particles-btn" class="pill-btn">
+                    <span>เอฟเฟกต์หัวใจ: <b id="particles-status">เปิด</b> ✨</span>
+                </button>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Toast Notification for Copying Link -->
+    <div id="toast" class="toast">คัดลอกลิงก์เรียบร้อยแล้ว ส่งให้เธอได้เลย! 💌</div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Configuration & Application Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
